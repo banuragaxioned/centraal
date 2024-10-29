@@ -5,6 +5,8 @@ import { Circle, Minus, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/user-avatar";
+import { TimeAdd } from "@/components/time-add";
+import { Agent } from "http";
 
 export interface Logged {
   id: number;
@@ -23,6 +25,13 @@ export interface Logged {
     name: string;
     hours: number;
   }[];
+  project?: {
+    name: string;
+    client: {
+      name: string;
+    };
+    billable: boolean;
+  };
 }
 
 export const columns: ColumnDef<Logged>[] = [
@@ -87,4 +96,30 @@ export const columns: ColumnDef<Logged>[] = [
       );
     },
   },
+  // add new column where there is a button on each subrows only to open a modal when clicked
+    {
+      accessorKey: "clientName",
+      header: () => <span className="inline-block w-20 text-right"></span>,
+      cell: ({ row }) => {
+        const { depth, original } = row;
+        const projectDetails = [{
+          billable: original.billable,
+          id: original.id,
+          name: original?.subRows?.[0]?.name ?? "",
+          client: {
+            id: original.id,
+            name: original?.project?.client?.name ?? "",
+          },
+        }];
+        const formatted = row.getValue("clientName") ? <TimeAdd key={original.id} projects={projectDetails} /> : null;
+        console.log("row", row);
+        console.log("formatted", formatted);
+  
+        return (
+          <span className={`relative mr-4 inline-block w-20 text-right ${depth === 0 ? "font-semibold" : ""}`}>
+            <span className={`${depth > 0 ? "opacity-50" : ""} mr-1`}>{formatted}</span>
+          </span>
+        );
+      },
+    },
 ];

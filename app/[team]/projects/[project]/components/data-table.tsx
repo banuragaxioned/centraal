@@ -56,6 +56,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     },
   });
 
+  console.log("Table",table.getRowModel().rows);
+
   const handlePrintClick = () => {
     setIsPrintMode(true);
   };

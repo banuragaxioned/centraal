@@ -74,6 +74,7 @@ const TIME_CHIPS = [
 ];
 
 export function TimeAdd({ projects }: { projects?: Project[] }) {
+  console.log("projects", projects);
   const { team } = useParams();
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
